@@ -1,5 +1,6 @@
 // import fetch from 'isomorphic-fetch'
 // import { createAction, handleAction } from 'redux-actions'
+import { actions as loading } from './loading'
 
 export const USERS_REQUEST = 'USERS_REQUEST'
 function requestUsers () {
@@ -19,8 +20,10 @@ function receiveUsers (json) {
 export const USERS_REFRESH = 'USERS_REFRESH'
 function refresh () {
   return (dispatch) => {
+    dispatch(loading.start('users'))
     dispatch(requestUsers())
     setTimeout(() => {
+      dispatch(loading.end('users'))
       dispatch(receiveUsers([1, 2, 3]))
     }, 2000)
 
@@ -31,9 +34,6 @@ function refresh () {
 }
 
 export const actions = { refresh }
-
-// reducers
-import { combineReducers } from 'redux'
 
 function refreshReducer (state = {
   items: []
@@ -53,8 +53,4 @@ function refreshReducer (state = {
   }
 }
 
-const usersReducers = combineReducers({
-  refreshReducer
-})
-
-export default usersReducers
+export default refreshReducer
