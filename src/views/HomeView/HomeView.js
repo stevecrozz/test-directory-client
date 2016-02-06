@@ -46,7 +46,10 @@ export class HomeView extends React.Component {
           Double (Async)
         </button>
         <hr />
-        <Link to='/404'>Go to 404 Page</Link>
+        <ul>
+          <li><Link to='/404'>Go to 404 Page</Link></li>
+          <li><Link to='/users'>Users</Link></li>
+        </ul>
       </div>
     )
   }
