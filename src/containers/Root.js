@@ -2,13 +2,25 @@ import React, { PropTypes } from 'react'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router'
 import classes from './Root.scss'
+import { connect } from 'react-redux'
+
+const mapStateToProps = (state) => ({
+  loading: state.loading
+})
 
 export default class Root extends React.Component {
   static propTypes = {
+    loading: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     routes: PropTypes.element.isRequired,
     store: PropTypes.object.isRequired
   };
+
+  getDefaultProps () {
+    return {
+      loading: {}
+    }
+  }
 
   get content () {
     return (
@@ -35,7 +47,7 @@ export default class Root extends React.Component {
 
   get loadingIndicator () {
     let style = { }
-    if (this.state && this.state.isFetching) {
+    if (Object.keys(this.props.loading).length > 0) {
       style.display = 'block'
     }
 
@@ -68,3 +80,5 @@ export default class Root extends React.Component {
     )
   }
 }
+
+export default connect(mapStateToProps)(Root)
