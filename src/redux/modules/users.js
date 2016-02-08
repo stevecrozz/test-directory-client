@@ -35,7 +35,7 @@ function refresh () {
 
 export const actions = { refresh }
 
-function refreshReducer (state = {
+export default function (state = {
   items: []
 }, action) {
   switch (action.type) {
@@ -52,5 +52,3 @@ function refreshReducer (state = {
       return state
   }
 }
-
-export default refreshReducer

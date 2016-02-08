@@ -16,11 +16,9 @@ export default class Root extends React.Component {
     store: PropTypes.object.isRequired
   };
 
-  getDefaultProps () {
-    return {
-      loading: {}
-    }
-  }
+  static defaultProps = {
+    loading: {}
+  };
 
   get content () {
     return (
