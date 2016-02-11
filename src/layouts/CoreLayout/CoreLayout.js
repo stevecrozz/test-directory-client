@@ -1,4 +1,7 @@
 import React, { PropTypes } from 'react'
+import { connect } from 'react-redux'
+import { actions as authActions } from 'redux/modules/auth'
+import { bindActionCreators } from 'redux'
 import '../../styles/core.scss'
 
 // Note: Stateless/function components *will not* hot reload!
@@ -10,18 +13,40 @@ import '../../styles/core.scss'
 //
 // CoreLayout is a pure function of its props, so we can
 // define it with a plain javascript function...
-function CoreLayout ({ children }) {
-  return (
-    <div className='page-container'>
-      <div className='view-container'>
-        {children}
+export class CoreLayout extends React.Component {
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
+    initiateForeground: PropTypes.func.isRequired
+  };
+
+  logout () {
+    this.props.logout()
+  }
+
+  render () {
+    return (
+      <div className='page-container'>
+        <div className='view-container'>
+          <div>
+            <a href='#' onClick={this.logout.bind(this)}>log out</a>
+          </div>
+          {this.props.children}
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
 CoreLayout.propTypes = {
   children: PropTypes.element
 }
 
-export default CoreLayout
+const mapStateToProps = (state, ownProps) => ({
+})
+
+const mapDispatchToProps = (dispatch) => Object.assign({}, bindActionCreators(authActions, dispatch), {
+  dispatch: dispatch
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(CoreLayout)

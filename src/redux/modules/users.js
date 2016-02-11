@@ -11,14 +11,13 @@ function requestUsers () {
 }
 
 export const USERS_RECEIVE = 'USERS_RECEIVE'
-function receiveUsers (json) {
+function receiveUsers (response) {
   return {
     type: USERS_RECEIVE,
-    users: json
+    response: response
   }
 }
 
-export const USERS_REFRESH = 'USERS_REFRESH'
 function refresh () {
   return (dispatch) => {
     dispatch(loading.start('users'))
@@ -32,10 +31,10 @@ function refresh () {
       })
 
       request.execute(function (resp) {
-        if (resp.code === 200) {
-          dispatch(receiveUsers(resp.users))
-        } else {
+        if (resp.code) {
           dispatch(error.handleError(resp.message))
+        } else {
+          dispatch(receiveUsers(resp.result))
         }
 
         dispatch(loading.end('users'))
@@ -46,18 +45,13 @@ function refresh () {
 
 export const actions = { refresh }
 
-export default function (state = {
-  items: []
-}, action) {
+export default function (state = {}, action) {
   switch (action.type) {
     case USERS_REQUEST:
+      return state
+    case USERS_RECEIVE:
       return Object.assign({}, state, {
-        isFetching: true
-      })
-    case USERS_REFRESH:
-      return Object.assign({}, state, {
-        isFetching: false,
-        items: action.users
+        response: action.response
       })
     default:
       return state
