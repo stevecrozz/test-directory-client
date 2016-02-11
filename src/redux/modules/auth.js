@@ -1,4 +1,4 @@
-// import { actions as loading } from './loading'
+import { actions as loading } from './loading'
 import { createAction } from 'redux-actions'
 import { routeActions } from 'react-router-redux'
 
@@ -37,10 +37,10 @@ export const initiate = createAction(AUTH_CHECK, (background, callback) => {
 
 export const initiateBackground = () => {
   return (dispatch, getState) => {
-    // dispatch(loading.start('auth'))
+    dispatch(loading.start('auth'))
     dispatch(initiate(true, (response) => {
       dispatch(acceptResult(response))
-      // dispatch(loading.end('auth'))
+      dispatch(loading.end('auth'))
     }))
   }
 }
