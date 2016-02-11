@@ -66,20 +66,23 @@ export const actions = {
 // Reducer
 // ------------------------------------
 export default function (state = {
-  needBackgroundAuth: true,
-  isAuthenticated: false
+  triedBackgroundAuth: false,
+  isAuthenticated: false,
+  isAuthenticating: false
 }, action) {
   switch (action.type) {
     case AUTH_ACCEPT:
       return Object.assign({}, state, {
-        needBackgroundAuth: false,
+        triedBackgroundAuth: true,
         isAuthenticated: action.result && !action.result.error,
+        isAuthenticating: false,
         result: Object.assign({}, action.result)
       })
     case AUTH_CHECK:
       return Object.assign({}, state, {
-        needBackgroundAuth: true,
-        isAuthenticated: false
+        triedBackgroundAuth: true,
+        isAuthenticated: false,
+        isAuthenticating: true
       })
     default:
       return state

@@ -1,6 +1,7 @@
 // import fetch from 'isomorphic-fetch'
 // import { createAction, handleAction } from 'redux-actions'
 import { actions as loading } from './loading'
+import { actions as error } from './error'
 
 export const USERS_REQUEST = 'USERS_REQUEST'
 function requestUsers () {
@@ -22,14 +23,24 @@ function refresh () {
   return (dispatch) => {
     dispatch(loading.start('users'))
     dispatch(requestUsers())
-    setTimeout(() => {
-      dispatch(loading.end('users'))
-      dispatch(receiveUsers([1, 2, 3]))
-    }, 2000)
 
-    // return fetch(`http://www.reddit.com/r/stuff.json`)
-    //   .then(response => response.json())
-    //   .then(json => dispatch(receiveUsers(json)))
+    gapi.client.load('admin', 'directory_v1', function () {
+      var request = gapi.client.directory.users.list({
+        'customer': 'my_customer',
+        'maxResults': 10,
+        'orderBy': 'email'
+      })
+
+      request.execute(function (resp) {
+        if (resp.code === 200) {
+          dispatch(receiveUsers(resp.users))
+        } else {
+          dispatch(error.handleError(resp.message))
+        }
+
+        dispatch(loading.end('users'))
+      })
+    })
   }
 }
 

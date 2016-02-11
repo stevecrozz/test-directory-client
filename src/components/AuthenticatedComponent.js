@@ -8,7 +8,8 @@ export function requireAuthentication (Component) {
   class AuthenticatedComponent extends React.Component {
     static propTypes = {
       isAuthenticated: PropTypes.bool.isRequired,
-      needBackgroundAuth: PropTypes.bool.isRequired,
+      isAuthenticating: PropTypes.bool.isRequired,
+      triedBackgroundAuth: PropTypes.bool.isRequired,
       location: PropTypes.object.isRequired,
       initiateBackground: PropTypes.func.isRequired,
       path: PropTypes.string.isRequired,
@@ -17,24 +18,29 @@ export function requireAuthentication (Component) {
     };
 
     componentWillMount () {
-      this.checkAuth(this.props.isAuthenticated, this.props.needBackgroundAuth)
+      this.checkAuth(
+          this.props.isAuthenticated,
+          this.props.triedBackgroundAuth,
+          this.props.isAuthenticating)
     }
 
     componentWillReceiveProps (nextProps) {
-      this.checkAuth(nextProps.isAuthenticated)
+      this.checkAuth(
+          nextProps.isAuthenticated,
+          nextProps.triedBackgroundAuth,
+          nextProps.isAuthenticating)
     }
 
-    checkAuth (isAuthenticated, needBackgroundAuth) {
-      if (isAuthenticated) {
+    checkAuth (isAuthenticated, triedBackgroundAuth, isAuthenticating) {
+      if (isAuthenticated || isAuthenticating) {
         return
       }
 
-      let redirectAfterAuth = this.props.location.pathname
-
-      if (needBackgroundAuth) {
-        this.props.initiateBackground(this.props.location.query.next || '/')
-      } else {
+      if (triedBackgroundAuth) {
+        let redirectAfterAuth = this.props.location.pathname
         this.props.dispatch(this.props.push(`/auth?next=${redirectAfterAuth}`))
+      } else {
+        this.props.initiateBackground(this.props.location.query.next || '/')
       }
     }
 
@@ -55,7 +61,8 @@ export function requireAuthentication (Component) {
     token: state.auth.token,
     userName: state.auth.userName,
     isAuthenticated: state.auth.isAuthenticated,
-    needBackgroundAuth: state.auth.needBackgroundAuth
+    isAuthenticating: state.auth.isAuthenticating,
+    triedBackgroundAuth: state.auth.triedBackgroundAuth
   })
 
   const mapDispatchToProps = (dispatch) => Object.assign({}, bindActionCreators(actions, dispatch), {
