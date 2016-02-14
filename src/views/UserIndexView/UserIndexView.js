@@ -2,16 +2,26 @@ import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { actions as userActions } from '../../redux/modules/users'
 
-const mapStateToProps = (state) => ({
-})
-
 export class UserIndexView extends React.Component {
   static propTypes = {
+    users: PropTypes.object.isRequired,
     refresh: PropTypes.func.isRequired
   };
 
   componentWillMount () {
     this.props.refresh()
+  }
+
+  get rows () {
+    return this.props.users.list.map((user) => {
+      return (
+        <tr key={user.id}>
+          <td>{user.name}</td>
+          <td>{user.email}</td>
+          <td>{user.workPhone}</td>
+        </tr>
+      )
+    })
   }
 
   render () {
@@ -21,12 +31,26 @@ export class UserIndexView extends React.Component {
           <h1>Users</h1>
         </div>
         <div className='row'>
-          <div className='col-xs-2 col-xs-offset-5'>
-          </div>
+          <table className='table table-striped table-hover'>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.rows}
+            </tbody>
+          </table>
         </div>
       </div>
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  users: state.users
+})
 
 export default connect(mapStateToProps, userActions)(UserIndexView)

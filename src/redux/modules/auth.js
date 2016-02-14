@@ -4,7 +4,12 @@ import { routeActions } from 'react-router-redux'
 
 let CLIENT_ID = '135058793686-m93p5sfrukker5hs09rl2gejr7k4uea1.apps.googleusercontent.com'
 let SCOPES = [
-  'https://www.googleapis.com/auth/admin.directory.user.readonly'
+  'https://www.googleapis.com/auth/admin.directory.group',
+  'https://www.googleapis.com/auth/admin.directory.orgunit',
+  'https://www.googleapis.com/auth/admin.directory.rolemanagement',
+  'https://www.googleapis.com/auth/admin.directory.resource.calendar',
+  'https://www.googleapis.com/auth/admin.directory.userschema',
+  'https://www.googleapis.com/auth/admin.directory.user'
 ]
 
 let gapiLoaded = new Promise((resolve, reject) => {

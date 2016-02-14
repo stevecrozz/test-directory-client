@@ -28,10 +28,20 @@ export class CoreLayout extends React.Component {
     return (
       <div className='page-container'>
         <div className='view-container'>
-          <div>
-            <a href='#' onClick={this.logout.bind(this)}>log out</a>
+          <div className='container-fluid'>
+            <div className='row'>
+              <div className='col-sm-2'>
+                <ul className='list-unstyled nav'>
+                  <li><a href='/users'>Users</a></li>
+                  <li><a href='/schemas'>Schemas</a></li>
+                  <li><a href='#' onClick={this.logout.bind(this)}>Log Out</a></li>
+                </ul>
+              </div>
+              <div className='col-sm-10'>
+                {this.props.children}
+              </div>
+            </div>
           </div>
-          {this.props.children}
         </div>
       </div>
     )
