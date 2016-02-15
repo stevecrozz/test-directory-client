@@ -15,7 +15,7 @@ export default (
     <IndexRoute component={HomeView} />
     <Route path='/users' component={requireAuthentication(UserIndexView)} />
     <Route path='/schemas' component={requireAuthentication(SchemaIndexView)} />
-    <Route path='/schemas/new' component={requireAuthentication(SchemaNewView)} />
+    <Route path='/schemas/:id' component={requireAuthentication(SchemaNewView)} />
     <Route path='/auth' component={AuthView} />
     <Route path='/404' component={NotFoundView} />
     <Redirect from='*' to='/404' />

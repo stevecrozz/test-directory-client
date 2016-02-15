@@ -1,0 +1,95 @@
+{
+  "classes": {
+    "form": "login-form",
+    "select": "form-control",
+    "checkboxInput": "checkbox",
+    "question": "form-group",
+    "input": "form-control",
+    "controlButton": "btn btn-primary pull-right",
+    "backButton": "btn btn-default pull-left",
+    "errorMessage": "alert alert-danger",
+    "buttonBar": "button-bar"
+  },
+  "formPanels": [{
+    "index": 1,
+    "panelId": "schema-field-panel"
+  }],
+  "questionPanels": [{
+    "panelId": "schema-field-panel",
+    "action": { "default": { "action": "SUBMIT" } },
+    "button": { "text": "Done" },
+    "questionSets": [{
+      "index": 1,
+      "questionSetId": "schema-field"
+    }]
+  }],
+  "questionSets": [{
+    "questionSetId": "schema-field",
+    "questions": [{
+      "questionId": "fieldName",
+      "question": "Field name",
+      "input": {
+        "type": "textInput",
+        "required": true
+      },
+      "validateOn" : "submit",
+      "validations" : [{
+        "type" : "isLength",
+        "params" : [1]
+      }]
+    }, {
+      "questionId": "fieldType",
+      "question": "Field type",
+      "input": {
+        "type": "selectInput",
+        "options": [
+          { "text": "string", "value": "STRING" },
+          { "text": "integer", "value": "INT64" },
+          { "text": "boolean", "value": "BOOL" },
+          { "text": "float", "value": "DOUBLE" },
+          { "text": "email", "value": "EMAIL" },
+          { "text": "phone", "value": "PHONE" },
+          { "text": "date", "value": "DATE" }
+        ]
+      }
+    }, {
+      "questionId": "indexed",
+      "input": {
+        "type": "checkboxInput",
+        "text": "Indexed",
+        "props": {
+          "value": true,
+          "defaultChecked": true
+        }
+      }
+    }, {
+      "questionId": "multiValued",
+      "input": {
+        "type": "checkboxInput",
+        "text": "Multi-valued",
+        "props": {
+          "value": true,
+          "defaultChecked": false
+        }
+      }
+    }, {
+      "questionId": "numericIndexingSpecMin",
+      "question": "Numeric index minimum",
+      "input": { "type": "textInput" }
+    }, {
+      "questionId": "numericIndexingSpecMax",
+      "question": "Numeric index maximum",
+      "input": { "type": "textInput" }
+    }, {
+      "questionId": "readAccessType",
+      "question": "Read access type",
+      "input": {
+        "type": "selectInput",
+        "options": [
+          { "text": "All domain users", "value": "ALL_DOMAIN_USERS" },
+          { "text": "Admins and self", "value": "ADMINS_AND_SELF" }
+        ]
+      }
+    }]
+  }]
+}
